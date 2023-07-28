@@ -1,0 +1,31 @@
+---
+name: "app:base:gitignore"
+description: Generates a .gitignore file.
+
+values:
+  - key: Languages
+    help: The programming languages to be used.
+    type: stringSlice
+    options:
+      - go
+      - node
+      - python
+      - ruby
+
+tasks:
+  - type: create
+    src:
+      path: default.gitignore
+    dst:
+      path: .gitignore
+
+  - type: update
+    dst:
+      path: .gitignore
+    action:
+      type: append
+      merge: upsert
+    src:
+      path: "{{ ._Item }}.gitignore"
+    description: "language: {{ ._Item }}"
+    each: '{{ .Languages | join "," }}'

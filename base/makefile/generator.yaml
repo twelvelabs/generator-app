@@ -1,0 +1,17 @@
+---
+name: "app:base:makefile"
+description: Generates a Makefile.
+
+tasks:
+  - type: create
+    src:
+      path: bin/
+    dst:
+      path: bin/
+      mode: "0755"
+
+  - type: create
+    src:
+      path: Makefile
+    dst:
+      path: Makefile

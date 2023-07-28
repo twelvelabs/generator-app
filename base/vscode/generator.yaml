@@ -1,0 +1,77 @@
+# yaml-language-server: $schema=/Users/sbaney/src/twelvelabs/stamp/docs/generator.schema.json
+---
+name: "app:base:vscode"
+description: "Generates a .vscode directory."
+
+values:
+  - key: Languages
+    help: The programming languages to be used.
+    type: stringSlice
+    options:
+      - go
+      - node
+      - python
+      - ruby
+
+  - key: GithubUsername
+    default: username
+    mode: hidden
+
+  - key: GithubProject
+    default: "{{ .DstPath | osBase }}"
+    mode: hidden
+
+  - key: GoPackage
+    help: The Go package name.
+    default: "github.com/{{ .GithubUsername }}/{{ .GithubProject }}"
+    if: '{{ has "go" .Languages }}'
+
+tasks:
+  - type: create
+    src:
+      path: .vscode/extensions.json
+    dst:
+      path: .vscode/extensions.json
+      conflict: keep
+
+  # Update extensions.json per each selected language
+  - type: update
+    dst:
+      path: .vscode/extensions.json
+    action:
+      type: append
+      merge: upsert
+    match:
+      pattern: $.recommendations
+      default: []
+    src:
+      path: .vscode/extensions.{{ ._Item }}.json
+    description: "language: {{ ._Item }}"
+    if: '{{ eq ._Item "go" }}' # TODO: add files for other languages
+    each: '{{ .Languages | join "," }}'
+
+  - type: create
+    src:
+      path: .vscode/settings.json
+    dst:
+      path: .vscode/settings.json
+      conflict: keep
+
+  # Update settings.json per each selected language
+  - type: update
+    dst:
+      path: .vscode/settings.json
+    action:
+      type: append
+    src:
+      path: .vscode/settings.{{ ._Item }}.json
+    description: "language: {{ ._Item }}"
+    if: '{{ eq ._Item "go" }}' # TODO: add files for other languages
+    each: '{{ .Languages | join "," }}'
+
+  - type: create
+    src:
+      path: .vscode/tasks.json
+    dst:
+      path: .vscode/tasks.json
+      conflict: keep

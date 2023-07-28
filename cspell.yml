@@ -1,0 +1,63 @@
+dictionaries:
+  - bash
+  - cpp
+  - docker
+  - sql
+  - golang
+enableFiletypes:
+  - dockercompose
+  - dotenv
+  - editorconfig
+  - github-actions-workflow
+  - ini
+  - makefile
+  - shellscript
+  - toml
+ignorePaths:
+  - .git/
+  - .gitattributes
+  - .gitignore
+  - .vscode/
+  - cspell.yml
+  - cspell.*.yml
+  - .golangci.yml
+  - go.mod
+  - go.sum
+ignoreRegExpList:
+  - /import \([^)]+\)/g
+language: en
+version: "0.2"
+words:
+  - baney
+  - buildcache
+  - codecov
+  - CODEOWNERS
+  - coverprofile
+  - devcontainer
+  - dotfiles
+  - ghaction
+  - gitleaks
+  - gitlint
+  - gocovsh
+  - gofmt
+  - golangci
+  - golangci-lint
+  - gomod
+  - goreleaser
+  - gpgconf
+  - gpgsign
+  - hadolint
+  - ifeq
+  - ifneq
+  - markdownlint
+  - nolint
+  - noreply
+  - oneof
+  - orlangure
+  - rlcp
+  - shellcheck
+  - shfmt
+  - signingkey
+  - sigstore
+  - trimpath
+  - twelvelabs

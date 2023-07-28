@@ -1,0 +1,2 @@
+- preset: gofmt
+- preset: golangci-lint

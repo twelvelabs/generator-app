@@ -1,0 +1,38 @@
+---
+name: "app:base:license"
+description: Generates a LICENSE file.
+
+values:
+  - key: License
+    help: The license to use.
+    options:
+      - agpl-3.0
+      - apache-2.0
+      - bsd-2-clause
+      - bsd-3-clause
+      - bsl-1.0
+      - cc0-1.0
+      - epl-2.0
+      - gpl-2.0
+      - gpl-3.0
+      - lgpl-2.1
+      - mit
+      - mpl-2.0
+      - unlicense
+    default: mit
+    validate: required
+
+  - key: CopyrightName
+    help: The copyright holder.
+
+  - key: CopyrightYear
+    help: The copyright year.
+    default: '{{ now | date "2006" }}'
+    prompt: never
+
+tasks:
+  - type: create
+    src:
+      path: "{{ .License }}.txt"
+    dst:
+      path: LICENSE

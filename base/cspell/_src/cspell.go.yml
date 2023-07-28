@@ -1,0 +1,17 @@
+dictionaries:
+  - golang
+ignorePaths:
+  - .golangci.yml
+  - go.mod
+  - go.sum
+ignoreRegExpList:
+  - /import \([^)]+\)/g
+words:
+  - coverprofile
+  - gocovsh
+  - gofmt
+  - golangci
+  - golangci-lint
+  - gomod
+  - nolint
+  - orlangure

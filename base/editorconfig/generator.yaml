@@ -1,0 +1,10 @@
+---
+name: "app:base:editorconfig"
+description: Generates an .editorconfig file.
+
+tasks:
+  - type: create
+    src:
+      path: ".editorconfig"
+    dst:
+      path: ".editorconfig"

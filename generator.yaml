@@ -1,0 +1,28 @@
+---
+name: "app"
+description: Generates a new project.
+
+tasks:
+  - type: generator
+    name: "app:base:github"
+
+  - type: generator
+    name: "app:base:vscode"
+
+  - type: generator
+    name: "app:base:editorconfig"
+
+  - type: generator
+    name: "app:base:gitignore"
+
+  - type: generator
+    name: "app:base:stylist"
+
+  - type: generator
+    name: "app:base:cspell"
+
+  - type: generator
+    name: "app:base:license"
+
+  - type: generator
+    name: "app:base:makefile"
