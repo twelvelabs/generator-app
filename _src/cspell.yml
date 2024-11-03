@@ -1,0 +1,67 @@
+allowCompoundWords: true
+dictionaries:
+  - bash
+  - cpp
+  - docker
+  - golang
+  - sql
+enableFiletypes:
+  - dockercompose
+  - dotenv
+  - editorconfig
+  - github-actions-workflow
+  - ini
+  - makefile
+  - shellscript
+  - toml
+ignorePaths:
+  - .git/
+  - .vscode/
+  - build/
+  - dist/
+  - .cspellcache
+  - .gitattributes
+  - .gitignore
+  - .golangci.yml
+  - coverage.*
+  - cspell.yml
+  - go.mod
+  - go.sum
+  - "**/testdata"
+  - "**/*_enum.go"
+ignoreRegExpList:
+  - /(github|gitlab|golang)\.(com|org)\/([\w-]+)\/([\w-]+)/
+  - /import \([^)]+\)/g
+  - /{{ .ProjectDir }}/
+  - /{{ .ProjectName }}/
+  - /{{ .CopyrightName }}/
+language: en
+version: "0.2"
+words:
+  - codecov
+  - convco
+  - coverprofile
+  - devcontainer
+  - fsutil
+  - ghaction
+  - gitleaks
+  - gocovsh
+  - gofmt
+  - golangci
+  - golangci-lint
+  - gomod
+  - goreleaser
+  - gpgsign
+  - hadolint
+  - ifeq
+  - ifneq
+  - markdownlint
+  - nolint
+  - octocat
+  - oneof
+  - orlangure
+  - pflag
+  - sast
+  - shellcheck
+  - shfmt
+  - trimpath

@@ -1,28 +1,171 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/twelvelabs/stamp/refs/heads/main/docs/stamp.schema.json
 ---
 name: "app"
 description: Generates a new project.
+visibility: public
+
+values:
+  - key: ProjectDir
+    default: "{{ .DstPath | osBase }}"
+    mode: hidden
+
+  - key: ProjectEnvPrefix
+    default: "{{ .ProjectDir | underscore | upper }}"
+    mode: hidden
+
+  - key: ProjectName
+    help: The project name.
+    default: "{{ .ProjectDir | titleize }}"
+
+  - key: ProjectDescription
+    help: The project description.
+    default: "{{ .ProjectName }} description."
+
+  - key: GithubUsername
+    name: GitHub Username
+    help: The GitHub username of the author.
+    default: '{{ .GithubUsername | default "username" }}'
+
+  - key: GoPackage
+    help: The Go package name.
+    default: "github.com/{{ .GithubUsername }}/{{ .ProjectDir }}"
+
+  - key: CopyrightName
+    help: The copyright holder.
+    default: "{{ .CopyrightName | default .GithubUsername }}"
+
+  - key: CopyrightYear
+    help: The copyright year.
+    default: '{{ now | date "2006" }}'
+    prompt: never
 
 tasks:
-  - type: generator
-    name: "app:base:github"
+  - type: create
+    src:
+      path: .github/
+      content_type: text
+    dst:
+      path: .github/
+      content_type: text
 
-  - type: generator
-    name: "app:base:vscode"
+  - type: create
+    src:
+      path: .vscode/
+    dst:
+      path: .vscode/
 
-  - type: generator
-    name: "app:base:editorconfig"
+  - type: create
+    src:
+      path: bin/
+    dst:
+      path: bin/
+      mode: "0755"
 
-  - type: generator
-    name: "app:base:gitignore"
+  - type: create
+    src:
+      path: internal/
+    dst:
+      path: internal/
 
-  - type: generator
-    name: "app:base:stylist"
+  - type: create
+    src:
+      path: .dependencies.yml
+      content_type: text
+    dst:
+      path: .dependencies.yml
+      content_type: text
 
-  - type: generator
-    name: "app:base:cspell"
+  - type: create
+    src:
+      path: .editorconfig
+    dst:
+      path: .editorconfig
 
-  - type: generator
-    name: "app:base:license"
+  - type: create
+    src:
+      path: .gitignore
+    dst:
+      path: .gitignore
 
-  - type: generator
-    name: "app:base:makefile"
+  - type: update
+    src:
+      content: |
+        setup-repo.sh
+    action:
+      type: append
+    dst:
+      path: .gitignore
+
+  - type: create
+    src:
+      path: .golangci.yml
+      content_type: text
+    dst:
+      path: .golangci.yml
+      content_type: text
+
+  - type: create
+    src:
+      path: .goreleaser.yaml
+      content_type: text
+    dst:
+      path: .goreleaser.yaml
+      content_type: text
+
+  - type: create
+    src:
+      path: .stylist.yml
+      content_type: text
+    dst:
+      path: .stylist.yml
+      content_type: text
+
+  - type: create
+    src:
+      path: cspell.yml
+      content_type: text
+    dst:
+      path: cspell.yml
+      content_type: text
+
+  - type: create
+    src:
+      path: Dockerfile
+    dst:
+      path: Dockerfile
+
+  - type: create
+    src:
+      path: go.mod
+    dst:
+      path: go.mod
+
+  - type: create
+    src:
+      path: go.sum
+    dst:
+      path: go.sum
+
+  - type: create
+    src:
+      path: LICENSE
+    dst:
+      path: LICENSE
+
+  - type: create
+    src:
+      path: main.go
+    dst:
+      path: main.go
+
+  - type: create
+    src:
+      path: Makefile
+    dst:
+      path: Makefile
+
+  - type: create
+    src:
+      path: README.md
+    dst:
+      path: README.md

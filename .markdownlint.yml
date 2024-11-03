@@ -1,0 +1,9 @@
+---
+# Example config w/ defaults:
+# - https://github.com/DavidAnson/markdownlint/blob/main/schema/.markdownlint.yaml
+
+# MD013/line-length - Line length
+MD013: false
+
+# MD034/no-bare-urls
+MD034: false

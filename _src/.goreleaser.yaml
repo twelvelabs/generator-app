@@ -1,0 +1,137 @@
+version: 2
+
+project_name: "{{ .ProjectDir }}"
+
+before:
+  hooks:
+    - go mod tidy
+    - go generate ./...
+    - ./bin/build-completions.sh "{{`{{ .ProjectName }}`}}"
+    - ./bin/build-manpages.sh "{{`{{ .ProjectName }}`}}"
+
+builds:
+  - env:
+      - CGO_ENABLED=0
+    goos:
+      - darwin
+      - linux
+      - windows
+    goarch:
+      - amd64
+      - arm64
+    # `flags`, `ldflags`, and `mod_timestamp` are configured for reproducible builds.
+    # See: https://goreleaser.com/customization/builds/#reproducible-builds
+    flags:
+      - -trimpath
+    ldflags:
+      - -s -w -X main.version={{`{{.Version}}`}} -X main.commit={{`{{.Commit}}`}} -X main.date={{`{{.CommitDate}}`}}
+    mod_timestamp: "{{`{{ .CommitTimestamp }}`}}"
+
+archives:
+  - id: default
+    builds_info:
+      group: root
+      owner: root
+    files:
+      - README.md
+      - LICENSE
+      - src: build/completions/*
+        dst: completions
+        strip_parent: true
+      - src: build/manpages/*
+        dst: manpages
+        strip_parent: true
+    format: tar.gz
+    format_overrides:
+      - goos: windows
+        format: zip
+
+brews:
+  - repository:
+      owner: "{{ .GithubUsername }}"
+      name: homebrew-tap
+      branch: main
+    directory: Formula
+    homepage: https://github.com/{{ .GithubUsername }}/{{ .ProjectDir }}
+    description: |
+      {{ .ProjectDescription }}
+    license: MIT
+    install: |-
+      bin.install "{{`{{ .ProjectName }}`}}"
+      bash_completion.install "completions/{{`{{ .ProjectName }}`}}.bash" => "{{`{{ .ProjectName }}`}}"
+      zsh_completion.install "completions/{{`{{ .ProjectName }}`}}.zsh" => "_{{`{{ .ProjectName }}`}}"
+      fish_completion.install "completions/{{`{{ .ProjectName }}`}}.fish"
+      man1.install "manpages/{{`{{ .ProjectName }}`}}.1.gz"
+    test: |
+      system "#{bin}/{{`{{ .ProjectName }}`}} --version"
+
+checksum:
+  name_template: checksums.txt
+  algorithm: sha256
+
+dockers:
+  - image_templates:
+      - "ghcr.io/{{ .GithubUsername }}/{{ .ProjectDir }}:{{`{{ .Tag }}`}}-amd64"
+    build_flag_templates:
+      - "--pull"
+      - "--label=org.opencontainers.image.created={{`{{.Date}}`}}"
+      - "--label=org.opencontainers.image.name={{`{{ .ProjectName }}`}}"
+      - "--label=org.opencontainers.image.revision={{`{{.FullCommit}}`}}"
+      - "--label=org.opencontainers.image.version={{`{{.Version}}`}}"
+      - "--label=org.opencontainers.image.source={{`{{.GitURL}}`}}"
+      - "--platform=linux/amd64"
+    goarch: amd64
+    use: buildx
+
+  - image_templates:
+      - "ghcr.io/{{ .GithubUsername }}/{{ .ProjectDir }}:{{`{{ .Tag }}`}}-arm64"
+    build_flag_templates:
+      - "--pull"
+      - "--label=org.opencontainers.image.created={{`{{.Date}}`}}"
+      - "--label=org.opencontainers.image.name={{`{{ .ProjectName }}`}}"
+      - "--label=org.opencontainers.image.revision={{`{{.FullCommit}}`}}"
+      - "--label=org.opencontainers.image.version={{`{{.Version}}`}}"
+      - "--label=org.opencontainers.image.source={{`{{.GitURL}}`}}"
+      - "--platform=linux/arm64"
+    goarch: arm64
+    use: buildx
+
+docker_manifests:
+  - name_template: "ghcr.io/{{ .GithubUsername }}/{{ .ProjectDir }}:{{`{{ .Tag }}`}}"
+    image_templates:
+      - "ghcr.io/{{ .GithubUsername }}/{{ .ProjectDir }}:{{`{{ .Tag }}`}}-amd64"
+      - "ghcr.io/{{ .GithubUsername }}/{{ .ProjectDir }}:{{`{{ .Tag }}`}}-arm64"
+
+  - name_template: "ghcr.io/{{ .GithubUsername }}/{{ .ProjectDir }}:latest"
+    image_templates:
+      - "ghcr.io/{{ .GithubUsername }}/{{ .ProjectDir }}:{{`{{ .Tag }}`}}-amd64"
+      - "ghcr.io/{{ .GithubUsername }}/{{ .ProjectDir }}:{{`{{ .Tag }}`}}-arm64"
+
+gomod:
+  proxy: true
+
+report_sizes: true
+
+release:
+  footer: |
+    ## Docker Image
+
+    ```shell
+    docker pull ghcr.io/{{ .GithubUsername }}/{{ .ProjectDir }}:{{`{{ .Tag }}`}}
+    ```
+
+snapshot:
+  version_template: "{{`{{ incpatch .Version }}`}}-next" # cspell: disable-line
+
+changelog:
+  use: github
+  sort: asc
+  groups:
+    - title: New features
+      regexp: "^.*feat[(\\w)]*:+.*$"
+      order: 0
+    - title: Bug fixes
+      regexp: "^.*fix[(\\w)]*:+.*$"
+      order: 10
+    - title: Other work
+      order: 99

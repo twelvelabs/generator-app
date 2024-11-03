@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "**/_src/.github/workflows/*.{yaml,yml}": "yaml",
+    },
+    // "[jinja-yaml]": {
+    //     "editor.defaultFormatter": "redhat.vscode-yaml"
+    // }
+}

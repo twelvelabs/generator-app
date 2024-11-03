@@ -1,0 +1,16 @@
+{
+    "recommendations": [
+        "davidanson.vscode-markdownlint",
+        "editorconfig.editorconfig",
+        "foxundermoon.shell-format",
+        "github.vscode-github-actions",
+        "github.vscode-pull-request-github",
+        "golang.go",
+        "redhat.vscode-yaml",
+        "streetsidesoftware.code-spell-checker",
+        "timonwong.shellcheck"
+    ],
+    "unwantedRecommendations": [
+        "ms-vscode.makefile-tools"
+    ]
+}

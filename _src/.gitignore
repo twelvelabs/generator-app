@@ -1,0 +1,7 @@
+# For example templates, see: https://github.com/github/gitignore
+.cache/
+build/
+dist/
+
+.cspellcache
+coverage.out

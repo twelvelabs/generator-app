@@ -1,9 +1,0 @@
-
-  - package-ecosystem: {{ if eq ._Item "go" }}gomod{{ else if eq ._Item "node" }}npm{{ else if eq ._Item "python" }}pip{{ else if eq ._Item "ruby" }}bundler{{ end }}
-    directory: /
-    schedule:
-      interval: weekly
-    commit-message:
-      prefix: fix
-      prefix-development: chore
-      include: scope
