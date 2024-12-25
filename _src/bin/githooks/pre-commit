@@ -3,13 +3,11 @@ set -o errexit -o errtrace -o nounset -o pipefail
 
 echo "Running .git/hooks/pre-commit"
 
-# Run all staged paths through stylist.
-# Note:
-# - `read` syntax re: https://www.shellcheck.net/wiki/SC2046
-# - `diff-filter=d` excludes deleted paths.
-# if there are only deleted paths read will return 1
-# https://unix.stackexchange.com/questions/265149/why-is-set-o-errexit-breaking-this-read-heredoc-expression/265151#265151
-read -ra staged_paths < <(git diff --diff-filter=d --name-only --staged | xargs) || true
-if [ ! ${#staged_paths[@]} -eq 0 ]; then
+# Get all staged paths (excluding deletes) as a space delimited string.
+staged_paths=$(git diff --diff-filter=d --name-only --staged | xargs)
+if [[ $staged_paths != "" ]]; then
+    # Convert the paths into an array variable.
+    read -ra staged_paths < <(echo "${staged_paths}")
+    # And pass them to stylist as positional arguments.
     stylist check "${staged_paths[@]}"
 fi

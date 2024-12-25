@@ -8,6 +8,7 @@ processors:
   - preset: gitleaks
   - preset: gofmt
   - preset: golangci-lint
+  - preset: hadolint
   - preset: markdownlint
   - preset: shellcheck
   - preset: shfmt

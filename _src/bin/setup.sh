@@ -48,10 +48,15 @@ else
 
     if [[ -d .git ]]; then
         echo "Updating .git/hooks."
+        # Clear out any existing hooks.
         mkdir -p .git/hooks
-        rm -f .git/hooks/*.sample
-        cp -f bin/githooks/* .git/hooks/
-        chmod +x .git/hooks/*
+        rm -f .git/hooks/*
+        # Symlink everything in `bin/githooks` over to `.git/hooks`.
+        # Ensures any updates will take effect immediately.
+        chmod +x bin/githooks/*
+        find bin/githooks \
+            -type f \
+            -exec bash -c 'ln -sf "$PWD/$1" "$PWD/.git/hooks/$(basename $1)"' githooks {} \;
     fi
 fi
 

@@ -11,7 +11,7 @@ import (
 type ctxKey string
 
 const (
-	ctxKeyApp ctxKey = "github.com/twelvelabs/depctl/internal/core.App"
+	ctxKeyApp ctxKey = "{{ .GoPackage }}/internal/core.App"
 )
 
 // App contains global and/or singleton application data.
