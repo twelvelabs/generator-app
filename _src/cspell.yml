@@ -32,9 +32,8 @@ ignorePaths:
 ignoreRegExpList:
   - /(github|gitlab|golang)\.(com|org)\/([\w-]+)\/([\w-]+)/
   - /import \([^)]+\)/g
-  - /{{ .ProjectDir }}/
-  - /{{ .ProjectName }}/
-  - /{{ .CopyrightName }}/
+  - /{{ .ProjectDir }}/i
+  - /{{ .CopyrightName }}/i
 language: en
 version: "0.2"
 words:
